@@ -1,4 +1,7 @@
-package engine.core;
+package engine;
+
+import engine.core.Cell;
+import engine.core.State;
 
 import java.util.Random;
 
@@ -23,7 +26,6 @@ public class Minefield {
     /**
      * Sets mines to minefield
      */
-    //TODO Add number constraint
     private void initializeField() {
         var rnd = new Random();
         int remainingMines= numberOfMines;

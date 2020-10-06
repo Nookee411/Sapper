@@ -1,10 +1,11 @@
 package engine.core;
 
+import engine.Minefield;
+
 public class SapperGame {
     private int clicks;
     private Minefield minefield;
 
-    //TODO Add coordinates of first cell so there will be no mine
     /**
      * Constructor of game sapper which sets size of minefield fills it with mines
      * @param size Number of rows and columns in minefield
@@ -50,7 +51,7 @@ public class SapperGame {
      * Returns specific cell with coordinates
      * @param i row of cell
      * @param j column of cell
-     * @return
+     * @return cell at coordinates i, j in minefield
      */
     public Cell getCell(int i, int j){
         return minefield.getCell(i,j);
