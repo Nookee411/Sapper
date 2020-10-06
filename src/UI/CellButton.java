@@ -10,10 +10,18 @@ public class CellButton extends JButton {
     private int i;
     private int j;
 
+    /**
+     * Standard JButton with coordinates in grid
+     * Cell parameter defines appearance of button
+     * @param cell Defines button appearance
+     * @param i Button row in grid
+     * @param j Button column in grid
+     */
     public CellButton(Cell cell, int i, int j){
         super("");
         this.i = i;
         this.j = j;
+        super.setBorder(BorderFactory.createCompoundBorder());
         switch (cell.getState()) {
             case closed -> {
                 super.setText("*");
@@ -41,25 +49,5 @@ public class CellButton extends JButton {
 
     public int getJ() {
         return j;
-    }
-
-    public void changeState(Cell cell){
-        switch (cell.getState()) {
-            case closed -> super.setText("*");
-            case opened -> {
-                if (!cell.isMine()) {
-                    super.setBackground(Color.GREEN);
-                    super.setText(cell.minesAround.toString());
-                } else {
-                    super.setBackground(Color.RED);
-                    super.setText("B");
-                }
-
-            }
-            case marked -> {
-                super.setBackground(Color.YELLOW);
-                super.setText("m");
-            }
-        }
     }
 }

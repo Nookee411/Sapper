@@ -11,11 +11,11 @@ import java.awt.event.ActionListener;
 public class SapperUI  extends JFrame {
     
     private final int SIZE = 11;
-    private SapperGame game;
-    private JPanel gamePanel = new JPanel(new GridLayout(SIZE,SIZE,1,1));
+    private final SapperGame game;
+    private final JPanel gamePanel = new JPanel(new GridLayout(SIZE,SIZE,0,0));
     public SapperUI(){
         super("Sapper");
-        game = new SapperGame(SIZE,20);
+        game = new SapperGame(SIZE,121);
         setBounds(100,100,500,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);

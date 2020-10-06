@@ -7,11 +7,14 @@ public class Cell {
     public Integer minesAround;
     private State state;
 
-
-    public Cell(Boolean isMine, Integer minesAround) {
+    /**
+     * Constructs cell for minefield
+     * @param isMine defines if cell contains mine
+     */
+    public Cell(Boolean isMine) {
         this.isMine = isMine;
         this.state = State.closed;
-        this.minesAround = minesAround;
+        this.minesAround = 0;
     }
 
     public Boolean isMine() {
