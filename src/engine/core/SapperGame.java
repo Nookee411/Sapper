@@ -68,4 +68,8 @@ public class SapperGame {
         }
     }
 
+    public void markMine(int i,int j){
+        minefield.markCell(i,j);
+    }
+
 }

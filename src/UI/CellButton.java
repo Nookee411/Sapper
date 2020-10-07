@@ -1,14 +1,13 @@
 package UI;
 
 import engine.core.Cell;
-import engine.core.State;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CellButton extends JButton {
-    private int i;
-    private int j;
+    private final int i;
+    private final int j;
 
     /**
      * Standard JButton with coordinates in grid
@@ -25,12 +24,12 @@ public class CellButton extends JButton {
         switch (cell.getState()) {
             case closed -> {
                 super.setText("*");
-                super.setBackground(Color.cyan);
+                super.setBackground(Color.white);
             }
             case opened -> {
                 if (!cell.isMine()) {
                     super.setBackground(Color.GREEN);
-                    super.setText(cell.minesAround.toString());
+                    super.setText(cell.minesAround==0 ? "": cell.minesAround.toString());
                 } else {
                     super.setBackground(Color.RED);
                     super.setText("B");

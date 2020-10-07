@@ -45,14 +45,17 @@ public class Minefield {
         //going trough all cells of field
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
+                countBombsForCell(i,j);
+            }
+        }
+    }
 
-                for (int k = -1; k <= 1; k++) {
-                    for (int l = -1; l <= 1; l++) {
-                        if (!(k == 0 && l == 0) && !isOutOfBounds(i + k, j + l) &&
-                                field[i + k][j + l].isMine())
-                            field[i][j].minesAround++;
-                    }
-                }
+    private void countBombsForCell(int i,int j){
+        for (int k = -1; k <= 1; k++) {
+            for (int l = -1; l <= 1; l++) {
+                if (!(k == 0 && l == 0) && !isOutOfBounds(i + k, j + l) &&
+                        field[i + k][j + l].isMine())
+                    field[i][j].minesAround++;
             }
         }
     }
@@ -67,6 +70,7 @@ public class Minefield {
         if(isFirstTurn){
             isFirstTurn = false;
             field[i][j] = new Cell(false);
+            countBombsForCell(i,j);
         }
         if (field[i][j].isMine())
         {
@@ -109,7 +113,7 @@ public class Minefield {
             return true;
         }
     }
-
+    
     public Cell getCell(int i, int j){
         return field[i][j];
     }
@@ -135,5 +139,12 @@ public class Minefield {
             }
         }
         return true;
+    }
+
+    public void markCell(int i,int j){
+        if(field[i][j].getState()==State.closed)
+            field[i][j].setState(State.marked);
+        else
+            field[i][j].setState(State.closed);
     }
 }
