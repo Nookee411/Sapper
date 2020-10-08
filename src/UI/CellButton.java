@@ -21,6 +21,7 @@ public class CellButton extends JButton {
         this.i = i;
         this.j = j;
         super.setBorder(BorderFactory.createCompoundBorder());
+
         switch (cell.getState()) {
             case closed -> {
                 super.setText("*");

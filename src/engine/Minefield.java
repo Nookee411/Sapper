@@ -6,7 +6,7 @@ import engine.core.State;
 import java.util.Random;
 
 public class Minefield {
-    private Cell[][] field;
+    private final Cell[][] field;
     private final int numberOfMines;
     private Boolean isFirstTurn;
     /**
@@ -20,21 +20,41 @@ public class Minefield {
         this.field = new Cell[size][size];
         this.numberOfMines = numberOfMines;
         isFirstTurn = true;
-        initializeField();
+        initField();
+        placeBombs();
+        countBombs();
     }
 
+
+    private void initField(){
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
+                field[i][j] = new Cell(false);
+            }
+        }
+    }
     /**
      * Sets mines to minefield
      */
-    private void initializeField() {
+    private void placeBombs() {
         var rnd = new Random();
         int remainingMines= numberOfMines;
-        double mineRate = ((double) numberOfMines / (getSize() * getSize())) * 100;
+        while(remainingMines>0){
+            int columns;
+            int rows;
+            do {
+                columns = rnd.nextInt(field.length);
+                rows = rnd.nextInt(field.length);
+            }while (field[rows][columns].isMine());
+            field[rows][columns] = new Cell(true);
+            remainingMines--;
+        }
+        /*double mineRate = ((double) numberOfMines / (getSize() * getSize())) * 100;
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++)
                 field[i][j] = new Cell(((rnd.nextInt(100) < mineRate)
                         && remainingMines-- != 0));
-        }
+        }*/
         countBombs();
     }
 
@@ -51,6 +71,7 @@ public class Minefield {
     }
 
     private void countBombsForCell(int i,int j){
+        field[i][j].minesAround =0;
         for (int k = -1; k <= 1; k++) {
             for (int l = -1; l <= 1; l++) {
                 if (!(k == 0 && l == 0) && !isOutOfBounds(i + k, j + l) &&
@@ -90,7 +111,7 @@ public class Minefield {
                 if ((l==0||k==0) &&
                         !isOutOfBounds(i+k,j+l)&&
                         (field[i + k][j + l].getState() == State.closed ||
-                                field[i + k][j + l].getState() == State.marked) &&
+                         field[i + k][j + l].getState() == State.marked) &&
                         !field[i + k][j + l].isMine()) {
                     field[i + k][j + l].setState(State.opened);
                     recursiveOpen(i + k, j + l);
@@ -144,7 +165,7 @@ public class Minefield {
     public void markCell(int i,int j){
         if(field[i][j].getState()==State.closed)
             field[i][j].setState(State.marked);
-        else
+        else if(field[i][j].getState() == State.marked)
             field[i][j].setState(State.closed);
     }
 }

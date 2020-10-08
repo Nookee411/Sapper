@@ -35,7 +35,8 @@ public class SapperGame {
      * @return Returns if mine was opened
      */
     public Boolean makeTurn(int i,int j){
-        clicks++;
+        if(minefield.getCell(i,j).getState() == State.closed)
+            clicks++;
         return minefield.openCell(i,j);
     }
 
@@ -69,6 +70,7 @@ public class SapperGame {
     }
 
     public void markMine(int i,int j){
+        clicks++;
         minefield.markCell(i,j);
     }
 

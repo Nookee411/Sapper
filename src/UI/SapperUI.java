@@ -1,6 +1,7 @@
 package UI;
 
 import engine.core.SapperGame;
+import engine.core.State;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,15 +9,15 @@ import java.awt.event.*;
 
 
 public class SapperUI  extends JFrame {
-    //TODO fix first click
     //TODO fix mine placement
     private final int SIZE = 11;
+    private boolean isGameGoes =true;
     private final SapperGame game;
     private final JPanel gamePanel = new JPanel(new GridLayout(SIZE,SIZE,0,0));
+
     public SapperUI(){
         super("Sapper");
-        super.addKeyListener(new KeyListener());
-        game = new SapperGame(SIZE,15);
+        game = new SapperGame(SIZE, (int) Math.round((SIZE*SIZE)*0.40));
         setBounds(100,100,500,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -94,31 +95,33 @@ public class SapperUI  extends JFrame {
 
         @Override
         public void mouseReleased(MouseEvent mouseEvent) {
-            var mouseButton = mouseEvent.getButton();
-            var button = (CellButton) mouseEvent.getSource();
-            if(mouseButton==1) {
-                int i = button.getI();
-                int j = button.getJ();
-                var turnRes = game.makeTurn(i, j);
-                redrawField();
-                if (turnRes) {
-                    //Win check
-                    if (game.isWin()) {
-                        gameWin();
+            if (isGameGoes) {
+
+
+                var mouseButton = mouseEvent.getButton();
+                var button = (CellButton) mouseEvent.getSource();
+                if (mouseButton == 1) {
+                    int i = button.getI();
+                    int j = button.getJ();
+                    var turnRes = game.makeTurn(i, j);
+                    redrawField();
+                    if (turnRes) {
+                        //Win check
+                        if (game.isWin()) {
+                            gameWin();
+                        }
+                    } else {
+                        //Lose
+                        gameLose();
                     }
-                } else {
-                    //Lose
-                    gameLose();
+                } else if (mouseButton == 3) {
+                    int i = button.getI();
+                    int j = button.getJ();
+                    game.markMine(i, j);
+                    redrawField();
                 }
-            }
-            else if(mouseButton==3){
-                //JOptionPane.showMessageDialog(null,"WAKE UP");
-                int i = button.getI();
-                int j = button.getJ();
-                game.markMine(i,j);
                 redrawField();
             }
-            redrawField();
         }
 
         @Override
@@ -140,24 +143,6 @@ public class SapperUI  extends JFrame {
         }
     }*/
 
-    private class KeyListener implements java.awt.event.KeyListener {
-
-        @Override
-        public void keyTyped(KeyEvent keyEvent) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent keyEvent) {
-
-        }
-
-        @Override
-        public void keyReleased(KeyEvent keyEvent) {
-            JOptionPane.showMessageDialog(null,"Fuck");
-        }
-    }
-
     private void gameWin(){
         JOptionPane.showMessageDialog(null, "You won!\nClicks: "+game.getClicks());
         newGame();
@@ -165,8 +150,10 @@ public class SapperUI  extends JFrame {
     private  void gameLose(){
         revealField();
         JOptionPane.showMessageDialog(null, "You lose!");
+        isGameGoes =false;
     }
     private void newGame(){
+        isGameGoes = true;
         game.newGame();
         redrawField();
     }
